@@ -1,0 +1,18 @@
+START ::= program
+program ::= statement ';'program
+statement::= formula TERM formula
+formula ::=ID|
+	|LAPREN formula RPAREN
+	|IF formula THEN formula ELSE formula
+	|formula IMPLIES formula
+	|formula OR formula|formula AND formula| formula XOR formula|formula EQUALS formula
+	|NOT formula
+	|ID 
+	|CONST
+TERM::=";"
+CONST::=TRUE|FALSE 
+LPAREN::="("
+RPAREN::=")"
+
+ID::= {A|B|C|D|E|F|G|H|IJ|K|L|M|N|O|P|Q|R|S|T|U|V|X|Y|Za|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z}*
+

@@ -1,0 +1,449 @@
+
+state 0:
+
+	START : . program 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 4
+	program	goto 3
+	statement	goto 2
+	START	goto 30
+	seq	goto 1
+
+	.	reduce by rule 2
+
+
+state 1:
+
+	program : seq .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 2:
+
+	seq : statement . program 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 4
+	program	goto 10
+	statement	goto 2
+	seq	goto 1
+
+	.	reduce by rule 2
+
+
+state 3:
+
+	START : program .  (reduce by rule 0)
+
+
+
+	.	reduce by rule 0
+
+
+state 4:
+
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+	statement : formula . TERM 
+
+	IMPLIES	shift 16
+	TERM	shift 15
+	AND	shift 14
+	OR	shift 13
+	XOR	shift 12
+	EQUALS	shift 11
+
+
+	.	error
+
+
+state 5:
+
+	formula : ID .  (reduce by rule 4)
+
+
+
+	.	reduce by rule 4
+
+
+state 6:
+
+	formula : IF . formula THEN formula ELSE formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 17
+
+	.	error
+
+
+state 7:
+
+	formula : NOT . formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 18
+
+	.	error
+
+
+state 8:
+
+	formula : CONST .  (reduce by rule 6)
+
+
+
+	.	reduce by rule 6
+
+
+state 9:
+
+	formula : LPAREN . formula RPAREN 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 19
+
+	.	error
+
+
+state 10:
+
+	seq : statement program .  (reduce by rule 3)
+
+
+
+	.	reduce by rule 3
+
+
+state 11:
+
+	formula : formula EQUALS . formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 20
+
+	.	error
+
+
+state 12:
+
+	formula : formula XOR . formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 21
+
+	.	error
+
+
+state 13:
+
+	formula : formula OR . formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 22
+
+	.	error
+
+
+state 14:
+
+	formula : formula AND . formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 23
+
+	.	error
+
+
+state 15:
+
+	statement : formula TERM .  (reduce by rule 14)
+
+
+
+	.	reduce by rule 14
+
+
+state 16:
+
+	formula : formula IMPLIES . formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 24
+
+	.	error
+
+
+state 17:
+
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+	formula : IF formula . THEN formula ELSE formula 
+
+	IMPLIES	shift 16
+	AND	shift 14
+	OR	shift 13
+	XOR	shift 12
+	EQUALS	shift 11
+	THEN	shift 25
+
+
+	.	error
+
+
+state 18:
+
+	formula : NOT formula .  (reduce by rule 7)
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+
+
+
+	.	reduce by rule 7
+
+
+state 19:
+
+	formula : LPAREN formula . RPAREN 
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+
+	IMPLIES	shift 16
+	RPAREN	shift 26
+	AND	shift 14
+	OR	shift 13
+	XOR	shift 12
+	EQUALS	shift 11
+
+
+	.	error
+
+
+state 20:
+
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula EQUALS formula .  (reduce by rule 11)
+	formula : formula . IMPLIES formula 
+
+
+
+	.	reduce by rule 11
+
+
+state 21:
+
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula XOR formula .  (reduce by rule 9)
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+
+
+
+	.	reduce by rule 9
+
+
+state 22:
+
+	formula : formula . OR formula 
+	formula : formula OR formula .  (reduce by rule 8)
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+
+
+
+	.	reduce by rule 8
+
+
+state 23:
+
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula AND formula .  (reduce by rule 10)
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+
+
+
+	.	reduce by rule 10
+
+
+state 24:
+
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+	formula : formula IMPLIES formula .  (reduce by rule 12)
+
+	IMPLIES	shift 16
+	AND	shift 14
+	OR	shift 13
+	XOR	shift 12
+	EQUALS	shift 11
+
+
+	.	reduce by rule 12
+
+
+state 25:
+
+	formula : IF formula THEN . formula ELSE formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 27
+
+	.	error
+
+
+state 26:
+
+	formula : LPAREN formula RPAREN .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 27:
+
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+	formula : IF formula THEN formula . ELSE formula 
+
+	IMPLIES	shift 16
+	AND	shift 14
+	OR	shift 13
+	XOR	shift 12
+	EQUALS	shift 11
+	ELSE	shift 28
+
+
+	.	error
+
+
+state 28:
+
+	formula : IF formula THEN formula ELSE . formula 
+
+	LPAREN	shift 9
+	CONST	shift 8
+	NOT	shift 7
+	IF	shift 6
+	ID	shift 5
+
+	formula	goto 29
+
+	.	error
+
+
+state 29:
+
+	formula : formula . OR formula 
+	formula : formula . XOR formula 
+	formula : formula . AND formula 
+	formula : formula . EQUALS formula 
+	formula : formula . IMPLIES formula 
+	formula : IF formula THEN formula ELSE formula .  (reduce by rule 13)
+
+	IMPLIES	shift 16
+	AND	shift 14
+	OR	shift 13
+	XOR	shift 12
+	EQUALS	shift 11
+
+
+	.	reduce by rule 13
+
+
+state 30:
+
+
+	EOF	accept
+
+
+	.	error
+
+45 of 126 action table entries left after compaction
+19 goto table entries
